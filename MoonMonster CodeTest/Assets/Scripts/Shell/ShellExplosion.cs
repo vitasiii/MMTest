@@ -5,6 +5,7 @@ namespace MoonMonster.Codetest
     public class ShellExplosion : MonoBehaviour
     {
         public LayerMask TankMask;
+        public GameObject Shooter;
         public ParticleSystem ExplosionParticles;
         public AudioSource ExplosionAudio;
         public float MaxDamage = 100f;
@@ -19,6 +20,8 @@ namespace MoonMonster.Codetest
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.gameObject == Shooter) return;
+
             Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, TankMask);
 
             for (int i = 0; i < colliders.Length; i++)
