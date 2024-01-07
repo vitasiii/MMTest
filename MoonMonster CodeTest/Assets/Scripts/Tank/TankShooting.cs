@@ -29,17 +29,22 @@ namespace MoonMonster.Codetest
         public float AngleOffset = 90f;
         public bool LookAtMouse = false;
 
+        // Audio
+        private bool _playingShootinAudioLoop = false;
 
-        private void Start()
+        private void Awake()
         {
-            _camera = Camera.main;
-
-            if(_weapons.Count > 0)
+            if (_weapons.Count > 0)
                 _currentWeapon = _weapons[_currentWeaponSlot];
             else
             {
                 Debug.LogError("No weapons set for this tank: " + this);
             }
+        }
+
+        private void Start()
+        {
+            _camera = Camera.main;
         }
 
         private void Update()
@@ -71,14 +76,30 @@ namespace MoonMonster.Codetest
 
         public void Fire()
         {
-            // TODO: make sure there is no way to skip realoading time by quickly swaping weapons
             if (_fired)
                 return;
 
             _currentWeapon.FireWeapon(gameObject, _fireTransform);
 
-            _shootingAudio.clip = _currentWeapon.FireClip;
-            _shootingAudio.Play();
+            if (!_playingShootinAudioLoop)
+            {
+                if (_currentWeapon.FireClip && !_currentWeapon.FireClipLoop)
+                {
+                    _shootingAudio.clip = _currentWeapon.FireClip;
+                    _shootingAudio.loop = false;
+                    _shootingAudio.Play();
+                }
+                else if (!_currentWeapon.FireClip && _currentWeapon.FireClipLoop)
+                {
+                    _shootingAudio.clip = _currentWeapon.FireClipLoop;
+                    _playingShootinAudioLoop = true;
+                    _shootingAudio.loop = true;
+                    _shootingAudio.Play();
+                }
+                else
+                    Debug.LogError("Shooting Audio Error! Either both FireClip and FireClipLoop set or not set");
+            }
+            
 
             _fired = true;
             _reloadCountdown = _currentWeapon.FireDelay;
@@ -86,11 +107,18 @@ namespace MoonMonster.Codetest
 
         public void StopFire()
         {
+            _currentWeapon.StopFiringWeapon();
 
+            if (_playingShootinAudioLoop)
+            {
+                _shootingAudio.Stop();
+                _playingShootinAudioLoop = false;
+            }
         }
 
         public void SelectWeaponSlot(int slot)
         {
+            StopFire();
             if (slot >= _weapons.Count)
             {
                 Debug.LogError("There is no weapon for such slot");
@@ -104,6 +132,7 @@ namespace MoonMonster.Codetest
 
         public void ScrollThroughWeapons(bool next)
         {
+            StopFire();
             if (next)
             {
                 if (_currentWeaponSlot + 1 < _weapons.Count)

@@ -51,6 +51,7 @@ namespace MoonMonster.Codetest
         public void DisableControl()
         {
             _movement.enabled = false;
+            _shooting.StopFire();
             _shooting.enabled = false;
             if (_playerInput)
                 _playerInput.enabled = false;
@@ -79,6 +80,8 @@ namespace MoonMonster.Codetest
 
             Instance.SetActive(false);
             Instance.SetActive(true);
+
+            _shooting.StopFire();
         }
     }
 }

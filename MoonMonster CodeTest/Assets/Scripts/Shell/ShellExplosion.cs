@@ -4,15 +4,43 @@ namespace MoonMonster.Codetest
 {
     public class ShellExplosion : MonoBehaviour
     {
-        public LayerMask TankMask;
-        public GameObject Shooter;
-        public ParticleSystem ExplosionParticles;
-        public AudioSource ExplosionAudio;
-        public float MaxDamage = 100f;
-        public float ExplosionForce = 1000f;
-        public float MaxLifeTime = 2f;
-        public float ExplosionRadius = 5f;
-        
+        #region Editor Fields
+
+        [SerializeField]
+        private LayerMask TankMask;
+        [SerializeField]
+        private ParticleSystem ExplosionParticles;
+        [SerializeField]
+        private AudioSource ExplosionAudio;
+        [SerializeField]
+        private float MaxDamage = 100f;
+        [SerializeField]
+        private float ExplosionForce = 1000f;
+        [SerializeField]
+        private float MaxLifeTime = 2f;
+        [SerializeField]
+        private float ExplosionRadius = 5f;
+
+        #endregion
+
+        #region Fields
+
+        private GameObject _shooter;
+
+        #endregion
+
+        #region Properties
+
+        public GameObject Shooter
+        {
+            get { return _shooter; }
+            set { _shooter = value; }
+        }
+
+        #endregion
+
+        #region Methods
+
         private void Start()
         {
             Destroy(gameObject, MaxLifeTime);
@@ -71,4 +99,6 @@ namespace MoonMonster.Codetest
             return damage;
         }
     }
+    
+    #endregion
 }
