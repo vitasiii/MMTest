@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoonMonster.Codetest;
 
+
 [CreateAssetMenu(fileName = "TankHellDevilHand", menuName = "TankWeapons/TankHellDevilHand")]
 public class TankHellDevilHand : BaseTankWeaponScriptableObject
 {
@@ -28,7 +29,11 @@ public class TankHellDevilHand : BaseTankWeaponScriptableObject
     {
         TankHealth shooterHealth = shooter.GetComponent<TankHealth>();
 
-        if (shooterHealth.CurrentHealth - _healthPrice <= 0) return;
+        if (shooterHealth.CurrentHealth - _healthPrice <= 0)
+        {
+            Instantiate(_hellDevilHandPrefab).GetComponent<HellDevilHandLogic>().StartFollowingObject(shooter);
+            return;
+        }
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;

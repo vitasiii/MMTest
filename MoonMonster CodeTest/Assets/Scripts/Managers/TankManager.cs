@@ -85,6 +85,7 @@ namespace MoonMonster.Codetest
 
             _shooting.StopFire();
             _shooting.Reset();
+            _aiController?.Reset();
         }
     }
 }

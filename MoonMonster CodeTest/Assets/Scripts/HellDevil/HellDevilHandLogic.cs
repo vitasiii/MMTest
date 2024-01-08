@@ -64,5 +64,25 @@ public class HellDevilHandLogic : MonoBehaviour
         yield return new WaitForSeconds(_grabDuration);
     }
 
+    public void StartFollowingObject(GameObject go)
+    {
+        StartCoroutine(FollowObject(go));
+    }
+
+    private IEnumerator FollowObject(GameObject go)
+    {
+        while (true)
+        {
+            yield return ObjectFollowing(go);
+        }
+    }
+
+    private IEnumerator ObjectFollowing(GameObject go)
+    {
+        transform.position = go.transform.position;
+
+        yield return null;
+    }
+
     #endregion
 }
