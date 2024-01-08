@@ -16,7 +16,9 @@ namespace MoonMonster.Codetest
         private AudioSource _explosionAudio;               
         private ParticleSystem _explosionParticles;        
         private float _currentHealth;                      
-        private bool _dead;                                
+        private bool _dead;
+
+        public float CurrentHealth => _currentHealth;
 
 
         private void Awake ()
@@ -46,7 +48,7 @@ namespace MoonMonster.Codetest
 
             if (_currentHealth <= 0f && !_dead)
             {
-                OnDeath ();
+                OnDeath();
             }
         }
 

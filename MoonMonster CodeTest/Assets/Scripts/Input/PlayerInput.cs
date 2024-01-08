@@ -17,6 +17,7 @@ namespace MoonMonster.Codetest
         private string _weaponSlot1ButtonName;
         private string _weaponSlot2ButtonName;
         private string _weaponSlot3ButtonName;
+        private string _weaponSlot4ButtonName;
         private string _scrollSelectWeaponButtonName;
 
 
@@ -31,6 +32,7 @@ namespace MoonMonster.Codetest
             _weaponSlot1ButtonName = "WeaponSlot1" + PlayerNumber;
             _weaponSlot2ButtonName = "WeaponSlot2" + PlayerNumber;
             _weaponSlot3ButtonName = "WeaponSlot3" + PlayerNumber;
+            _weaponSlot4ButtonName = "WeaponSlot4" + PlayerNumber;
             _scrollSelectWeaponButtonName = "ScrollSelectWeapon" + PlayerNumber;
         }
 
@@ -68,6 +70,9 @@ namespace MoonMonster.Codetest
 
             if (Input.GetButton(_weaponSlot3ButtonName))
                 _shooting.SelectWeaponSlot(2);
+
+            if (Input.GetButton(_weaponSlot4ButtonName))
+                _shooting.SelectWeaponSlot(3);
 
             if (Input.GetAxis(_scrollSelectWeaponButtonName) > 0)
                 _shooting.ScrollThroughWeapons(true);
