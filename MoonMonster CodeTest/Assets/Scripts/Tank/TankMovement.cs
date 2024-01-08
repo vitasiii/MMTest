@@ -103,8 +103,9 @@ namespace MoonMonster.Codetest
             right.y = 0f;
             forward.Normalize();
             right.Normalize();
+
             
-            Vector3 movement = (_verticalInputValue * forward + _horizontalInputValue * right) * (Speed * Time.fixedDeltaTime);
+            Vector3 movement = Vector3.ClampMagnitude((_verticalInputValue * forward + _horizontalInputValue * right), 1f) * (Speed * Time.fixedDeltaTime);
 
             _rigidbody.MovePosition(_rigidbody.position + movement);
             
