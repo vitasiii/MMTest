@@ -11,6 +11,7 @@ namespace MoonMonster.Codetest
         public float StartDelay = 3f;
         public float EndDelay = 3f;
         public CameraControl CameraControl;
+        public UIHUD HUD;
         public Text MessageText;
         public GameObject PlayerTankPrefab;
         public GameObject AITankPrefab;
@@ -36,6 +37,19 @@ namespace MoonMonster.Codetest
             StartCoroutine(GameLoop());
         }
 
+        private void OnDestroy()
+        {
+            Cleanup();
+        }
+
+        private void Cleanup()
+        {
+            for (int i = 0; i < PlayerTanks.Length; i++)
+            {
+                PlayerTanks[i].Shooting.OnReloadCountdownChanged.RemoveListener(HUD.UpdateTime);
+            }
+        }
+
         private void SpawnPlayerTanks()
         {
             for (int i = 0; i < PlayerTanks.Length; i++)
@@ -45,6 +59,7 @@ namespace MoonMonster.Codetest
                         GameObject;
                 PlayerTanks[i].TankNumber = i + 1;
                 PlayerTanks[i].Setup();
+                PlayerTanks[i].Shooting.OnReloadCountdownChanged.AddListener(HUD.UpdateTime);
             }
         }
         

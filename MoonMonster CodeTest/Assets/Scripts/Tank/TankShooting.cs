@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace MoonMonster.Codetest
@@ -20,6 +21,7 @@ namespace MoonMonster.Codetest
         private int _currentWeaponSlot = 0;
 
         // Shooting cooldown
+        public UnityEvent<float> OnReloadCountdownChanged;
         private float _reloadCountdown;
         private bool _fired;
 
@@ -47,6 +49,12 @@ namespace MoonMonster.Codetest
             _camera = Camera.main;
         }
 
+        public void Reset()
+        {
+            _reloadCountdown = 0f;
+            OnReloadCountdownChanged.Invoke(_reloadCountdown);
+        }
+
         private void Update()
         {
             if (LookAtMouse == true)
@@ -58,6 +66,8 @@ namespace MoonMonster.Codetest
                     _fired = false;
                 else
                     _reloadCountdown -= Time.deltaTime;
+
+                OnReloadCountdownChanged.Invoke(_reloadCountdown);
             }
         }
 
@@ -100,9 +110,11 @@ namespace MoonMonster.Codetest
                     Debug.LogError("Shooting Audio Error! Either both FireClip and FireClipLoop set or not set");
             }
             
-
-            _fired = true;
-            _reloadCountdown = _currentWeapon.FireDelay;
+            if (_currentWeapon.FireDelay > 0)
+            {
+                _fired = true;
+                _reloadCountdown = _currentWeapon.FireDelay;
+            }
         }
 
         public void StopFire()

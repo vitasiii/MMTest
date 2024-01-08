@@ -20,6 +20,8 @@ namespace MoonMonster.Codetest
         private AIController _aiController;
         private GameObject _canvasGameObject;
 
+        public TankShooting Shooting => _shooting;
+
         public void Setup()
         {
             _movement = Instance.GetComponent<TankMovement>();
@@ -82,6 +84,7 @@ namespace MoonMonster.Codetest
             Instance.SetActive(true);
 
             _shooting.StopFire();
+            _shooting.Reset();
         }
     }
 }
