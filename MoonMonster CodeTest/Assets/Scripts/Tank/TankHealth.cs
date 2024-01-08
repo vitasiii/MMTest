@@ -10,7 +10,9 @@ namespace MoonMonster.Codetest
         public Image FillImage;                           
         public Color FullHealthColor = Color.green;       
         public Color ZeroHealthColor = Color.red;         
-        public GameObject ExplosionPrefab;                
+        public GameObject ExplosionPrefab;
+        public bool _regenerationAllowed = true;
+        public float _regenerationPerSecond = 4f;
         
         
         private AudioSource _explosionAudio;               
@@ -30,6 +32,18 @@ namespace MoonMonster.Codetest
             _explosionParticles.gameObject.SetActive (false);
         }
 
+        private void Update()
+        {
+            HandleRegeneration();
+        }
+
+        private void HandleRegeneration()
+        {
+            if (!_regenerationAllowed) return;
+
+            Heal(_regenerationPerSecond * Time.deltaTime);
+        }
+
 
         private void OnEnable()
         {
@@ -39,6 +53,18 @@ namespace MoonMonster.Codetest
             SetHealthUI();
         }
 
+        public void Heal(float amount)
+        {
+            if (_currentHealth >= StartingHealth)
+            {
+                _currentHealth = StartingHealth;
+                return;
+            }
+
+            _currentHealth = Mathf.Clamp(_currentHealth + amount, 0, StartingHealth);
+
+            SetHealthUI();
+        }
 
         public void TakeDamage (float amount)
         {
